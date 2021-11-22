@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "BaseToolbox",
+        "repositoryURL": "https://github.com/lkzhao/BaseToolbox",
+        "state": {
+          "branch": null,
+          "revision": "c2d437c0ce096d8d438c5fea38c6d92ee3dea020",
+          "version": "0.1.5"
+        }
+      },
+      {
+        "package": "KeyboardManager",
+        "repositoryURL": "https://github.com/lkzhao/KeyboardManager",
+        "state": {
+          "branch": null,
+          "revision": "0e2c224c775ffcd42fcf9e1d386edb22043d4264",
+          "version": "0.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
