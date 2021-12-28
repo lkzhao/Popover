@@ -149,8 +149,8 @@ public class PopoverManager {
         popovers.append(PopoverData(view: popoverWrapper, backgroundView: backgroundOverlay, gesture: gesture, config: config))
         popoverWrapper.alpha = 0
         UIView.animate(
-            withDuration: 0.4, delay: 0,
-            usingSpringWithDamping: 0.9, initialSpringVelocity: 0,
+            withDuration: 0.48, delay: 0,
+            usingSpringWithDamping: 0.8, initialSpringVelocity: 0,
             options: [.beginFromCurrentState, .allowUserInteraction],
             animations: {
                 backgroundOverlay?.alpha = 1
@@ -253,7 +253,7 @@ public class PopoverManager {
                 gesture.view?.removeGestureRecognizer(gesture)
             }
             UIView.animate(
-                withDuration: 0.35, delay: 0, options: [.beginFromCurrentState],
+                withDuration: 0.28, delay: 0, options: [.beginFromCurrentState],
                 animations: {
                     popoverData.view.transform = entryTransform
                     popoverData.view.alpha = 0
