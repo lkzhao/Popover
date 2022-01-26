@@ -6,7 +6,7 @@ struct PopoverData {
     let view: PopoverView
     let backgroundView: UIView?
     let gesture: TouchObserveGesture?
-    let config: PopoverConfig
+    var config: PopoverConfig
 }
 
 public class PopoverManager {
@@ -15,6 +15,16 @@ public class PopoverManager {
     private var popovers: [PopoverData] = []
     public var currentPopover: PopoverView? {
         return popovers.last?.view
+    }
+    public var currentPopoverConfig: PopoverConfig? {
+        get {
+            popovers.last?.config
+        }
+        set {
+            if let newValue = newValue, !popovers.isEmpty {
+                popovers[popovers.count - 1].config = newValue
+            }
+        }
     }
     public var currentBackgroundOverlay: UIView? {
         return popovers.last?.backgroundView
@@ -202,10 +212,10 @@ public class PopoverManager {
     func layout(popover: PopoverView, config: PopoverConfig) -> CGAffineTransform {
         let container = config.container
         let sourceRect = config.sourceRect
-        let containerRect = container.bounds.inset(
+        let containerRect = container.bounds.inset(by: config.containerInsets).inset(
             by: UIEdgeInsets(
-                top: container.safeAreaInsets.top + 5, left: 5,
-                bottom: 5 + max(container.safeAreaInsets.bottom, KeyboardManager.shared.keyboardHeight), right: 5))
+                top: container.safeAreaInsets.top, left: container.safeAreaInsets.left,
+                bottom: max(container.safeAreaInsets.bottom, KeyboardManager.shared.keyboardHeight), right: container.safeAreaInsets.right))
         var size = popover.sizeThatFits(containerRect.size.inset(by: config.insets)).inset(by: -config.insets)
         size.height = min(containerRect.height, size.height)
         size.width = min(containerRect.width, size.width)

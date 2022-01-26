@@ -27,6 +27,7 @@ public struct PopoverConfig {
     public var duration: TimeInterval = .infinity
     public var identifier: String? = nil
     public var insets: UIEdgeInsets = .zero
+    public var containerInsets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
     public var backgroundColor: UIColor = PopoverConfig.defaultBackgroundColor
     public var backgroundOverlayColor: UIColor = PopoverConfig.defaultBackgroundOverlayColor
