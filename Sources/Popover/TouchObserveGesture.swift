@@ -5,12 +5,20 @@ public class TouchObserveGesture: UIGestureRecognizer {
     
     public override init(target: Any?, action: Selector?) {
         super.init(target: target, action: action)
-        allowedTouchTypes = [
-            NSNumber(value: UITouch.TouchType.pencil.rawValue),
-            NSNumber(value: UITouch.TouchType.direct.rawValue),
-            NSNumber(value: UITouch.TouchType.indirect.rawValue),
-            NSNumber(value: UITouch.TouchType.indirectPointer.rawValue),
-        ]
+        if #available(iOS 13.4, *) {
+            allowedTouchTypes = [
+                NSNumber(value: UITouch.TouchType.pencil.rawValue),
+                NSNumber(value: UITouch.TouchType.direct.rawValue),
+                NSNumber(value: UITouch.TouchType.indirect.rawValue),
+                NSNumber(value: UITouch.TouchType.indirectPointer.rawValue),
+            ]
+        } else {
+            allowedTouchTypes = [
+                NSNumber(value: UITouch.TouchType.pencil.rawValue),
+                NSNumber(value: UITouch.TouchType.direct.rawValue),
+                NSNumber(value: UITouch.TouchType.indirect.rawValue),
+            ]
+        }
         delaysTouchesBegan = false
         delaysTouchesEnded = false
         cancelsTouchesInView = false
