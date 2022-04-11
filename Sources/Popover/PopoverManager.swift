@@ -5,11 +5,11 @@ import KeyboardManager
 struct PopoverData {
     let view: PopoverView
     let backgroundView: UIView?
-    let gesture: TouchObserveGesture?
+    let gesture: PopoverDismissGesture?
     var config: PopoverConfig
 }
 
-public class PopoverManager {
+public class PopoverManager: NSObject {
     public static let shared = PopoverManager()
 
     private var popovers: [PopoverData] = []
@@ -91,18 +91,16 @@ public class PopoverManager {
         show(popover: popover, config: config)
     }
 
-    @objc func didTouch(gr: TouchObserveGesture) {
-        if gr.state == .began {
-            if let currentPopover = PopoverManager.shared.currentPopover,
-               currentPopover.hitTest(gr.location(in: currentPopover), with: nil) == nil,
-               PopoverManager.shared.popovers.last?.config.dismissByBackgroundTap ?? true,
-               PopoverManager.shared.onBackgroundTap?(gr) ?? true
-            {
-                let id = PopoverManager.shared.currentPopover?.identifier
-                delay(0.1) {
-                    if PopoverManager.shared.currentPopover?.identifier == id {
-                        PopoverManager.shared.dismiss()
-                    }
+    @objc func didTouch(gr: PopoverDismissGesture) {
+        if let currentPopover = PopoverManager.shared.currentPopover,
+           currentPopover.hitTest(gr.location(in: currentPopover), with: nil) == nil,
+           PopoverManager.shared.popovers.last?.config.dismissByBackgroundTap ?? true,
+           PopoverManager.shared.onBackgroundTap?(gr) ?? true
+        {
+            let id = PopoverManager.shared.currentPopover?.identifier
+            delay(0.1) {
+                if PopoverManager.shared.currentPopover?.identifier == id {
+                    PopoverManager.shared.dismiss()
                 }
             }
         }
@@ -141,7 +139,7 @@ public class PopoverManager {
             }
         }
 
-        let gesture = TouchObserveGesture(target: self, action: #selector(didTouch))
+        let gesture = PopoverDismissGesture(target: self, action: #selector(didTouch))
         if config.dismissByBackgroundTap {
             container.addGestureRecognizer(gesture)
         }
@@ -221,7 +219,8 @@ public class PopoverManager {
         size.width = min(containerRect.width, size.width)
 
         popover.bounds = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-
+        popover.layoutSubviews()
+        
         let popoverOrigin = origin(
             positioning: config.positioning, sourceRect: sourceRect, size: size, containerRect: containerRect)
         let transformOrigin = origin(

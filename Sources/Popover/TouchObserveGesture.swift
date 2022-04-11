@@ -2,7 +2,7 @@ import UIKit
 
 /// a gesture that notifies the target whenever a touch begans. It doesn't block touch or any other gestures
 public class TouchObserveGesture: UIGestureRecognizer {
-    
+
     public override init(target: Any?, action: Selector?) {
         super.init(target: target, action: action)
         if #available(iOS 13.4, *) {
