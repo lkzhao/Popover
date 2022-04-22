@@ -25,6 +25,7 @@ public struct PopoverConfig {
     }
     public var container: UIView
     public var duration: TimeInterval = .infinity
+    public var delay: TimeInterval = 0
     public var identifier: String? = nil
     public var insets: UIEdgeInsets = .zero
     public var containerInsets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)

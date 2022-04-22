@@ -157,7 +157,7 @@ public class PopoverManager: NSObject {
         popovers.append(PopoverData(view: popoverWrapper, backgroundView: backgroundOverlay, gesture: gesture, config: config))
         popoverWrapper.alpha = 0
         UIView.animate(
-            withDuration: 0.48, delay: 0,
+            withDuration: 0.48, delay: config.delay,
             usingSpringWithDamping: 0.8, initialSpringVelocity: 0,
             options: [.beginFromCurrentState, .allowUserInteraction],
             animations: {
