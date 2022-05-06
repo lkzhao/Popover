@@ -3,6 +3,7 @@ import UIKit
 /// a gesture that notifies the target whenever a touch begans. It doesn't block touch or any other gestures
 public class PopoverDismissGesture: UIGestureRecognizer {
     var startPosition: CGPoint?
+    var blockTap: Bool = true
 
     public override init(target: Any?, action: Selector?) {
         super.init(target: target, action: action)
@@ -57,7 +58,7 @@ extension PopoverDismissGesture: UIGestureRecognizerDelegate {
 
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         // we block tap gesture underneath the popover view
-        if otherGestureRecognizer is UITapGestureRecognizer ||
+        if blockTap, otherGestureRecognizer is UITapGestureRecognizer ||
             "\(type(of: otherGestureRecognizer))" == "_UITouchDownGestureRecognizer" // this gesture is used for UIButton with menu
         {
             return otherGestureRecognizer.view?.closestViewMatchingType(PopoverView.self) == nil

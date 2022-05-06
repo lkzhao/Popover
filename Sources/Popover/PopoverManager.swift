@@ -140,6 +140,7 @@ public class PopoverManager: NSObject {
         }
 
         let gesture = PopoverDismissGesture(target: self, action: #selector(didTouch))
+        gesture.blockTap = config.shouldBlockBackgroundTapGesture
         if config.dismissByBackgroundTap {
             container.addGestureRecognizer(gesture)
         }

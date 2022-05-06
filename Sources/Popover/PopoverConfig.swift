@@ -41,6 +41,7 @@ public struct PopoverConfig {
     public var dismissPreviousPopover: Bool = true
     public var showBackgroundOverlay: Bool = true
     public var dismissByBackgroundTap: Bool = true
+    public var shouldBlockBackgroundTapGesture: Bool = true
     public var showTriangle: Bool = true
 
     public var anchor: PopoverAnchor = .frame(rect: CGRect(center: PopoverConfig.defaultContainer?.bounds.center ?? .zero, size: .zero))
