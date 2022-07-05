@@ -45,6 +45,11 @@ public struct PopoverConfig {
     public var showTriangle: Bool = true
 
     public var anchor: PopoverAnchor = .frame(rect: CGRect(center: PopoverConfig.defaultContainer?.bounds.center ?? .zero, size: .zero))
+    
+    // block to be call when background tap is detected. return true if you want to dismiss the popover
+    public var onBackgroundTap: ((UIGestureRecognizer) -> Bool)?
+
+    public var onDismiss: (() -> Void)?
 
     public var sourceRect: CGRect {
         get {
