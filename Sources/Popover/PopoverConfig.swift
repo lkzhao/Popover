@@ -57,7 +57,7 @@ public struct PopoverConfig {
             case let .frame(rect):
                 return rect
             case let .view(view):
-                return container.convert(view.frameWithoutTransform, from: view.superview)
+                return container.convert(view.bounds, from: view)
             }
         }
         set {
