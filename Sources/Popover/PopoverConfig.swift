@@ -43,6 +43,7 @@ public struct PopoverConfig {
     public var dismissByBackgroundTap: Bool = true
     public var shouldBlockBackgroundTapGesture: Bool = true
     public var showTriangle: Bool = true
+    public var ignoreAnchorViewTransform: Bool = false
 
     public var anchor: PopoverAnchor = .frame(rect: CGRect(center: PopoverConfig.defaultContainer?.bounds.center ?? .zero, size: .zero))
     
@@ -57,7 +58,11 @@ public struct PopoverConfig {
             case let .frame(rect):
                 return rect
             case let .view(view):
-                return container.convert(view.bounds, from: view)
+                if ignoreAnchorViewTransform {
+                    return container.convert(view.frameWithoutTransform, from: view.superview)
+                } else {
+                    return container.convert(view.bounds, from: view)
+                }
             }
         }
         set {
