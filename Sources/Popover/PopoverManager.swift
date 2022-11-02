@@ -153,8 +153,10 @@ public class PopoverManager: NSObject {
         popovers.append(PopoverData(view: popoverWrapper, backgroundView: backgroundOverlay, gesture: gesture, config: config))
         popoverWrapper.alpha = 0
         UIView.animate(
-            withDuration: 0.48, delay: config.delay,
-            usingSpringWithDamping: 0.8, initialSpringVelocity: 0,
+            withDuration: config.appearingAnimationDuration,
+            delay: config.delay,
+            usingSpringWithDamping: config.appearingAnimationSpringDamping,
+            initialSpringVelocity: config.appearingAnimationInitialSpringVelocity,
             options: [.beginFromCurrentState, .allowUserInteraction],
             animations: {
                 backgroundOverlay?.alpha = 1
@@ -203,6 +205,7 @@ public class PopoverManager: NSObject {
         return popoverOrigin
     }
 
+    // return: Entry Transform
     func layout(popover: PopoverView, config: PopoverConfig) -> CGAffineTransform {
         let container = config.container
         let sourceRect = config.sourceRect
@@ -232,9 +235,13 @@ public class PopoverManager: NSObject {
             popover.triangle.center = localTransformOrigin + CGPoint(x: 0, y: -8)
         }
 
-        // return: Entry Transform
-        return CGAffineTransform.identity.translatedBy(x: localTransformOrigin.x, y: localTransformOrigin.y)
-            .scaledBy(x: 0.1, y: 0.1).translatedBy(x: -localTransformOrigin.x, y: -localTransformOrigin.y)
+        switch config.transitionType {
+        case .tooltip:
+            return CGAffineTransform.identity.translatedBy(x: localTransformOrigin.x, y: localTransformOrigin.y)
+                .scaledBy(x: 0.1, y: 0.1).translatedBy(x: -localTransformOrigin.x, y: -localTransformOrigin.y)
+        case .notification:
+            return CGAffineTransform.identity.translatedBy(x: 0, y: localTransformOrigin.y - popover.bounds.midY)
+        }
     }
 
     public func relayout() {
@@ -255,7 +262,7 @@ public class PopoverManager: NSObject {
                 gesture.view?.removeGestureRecognizer(gesture)
             }
             UIView.animate(
-                withDuration: 0.28, delay: 0, options: [.beginFromCurrentState],
+                withDuration: popoverData.config.disappearingAnimationDuration, delay: 0, options: [.beginFromCurrentState],
                 animations: {
                     popoverData.view.transform = entryTransform
                     popoverData.view.alpha = 0

@@ -17,6 +17,9 @@ public struct PopoverConfig {
         case frame(rect: CGRect)
         case view(view: UIView)
     }
+    public enum PopoverTransitionType {
+        case tooltip, notification
+    }
     public struct PopoverPositioning {
         public var spacing: CGSize = .zero
         public var horizontalAlignment: PopoverAlignment = .center
@@ -29,6 +32,11 @@ public struct PopoverConfig {
     public var identifier: String? = nil
     public var insets: UIEdgeInsets = .zero
     public var containerInsets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+    public var transitionType: PopoverTransitionType = .tooltip
+    public var appearingAnimationDuration: CGFloat = 0.4
+    public var appearingAnimationSpringDamping: CGFloat = 0.8
+    public var appearingAnimationInitialSpringVelocity: CGFloat = 0.0
+    public var disappearingAnimationDuration: CGFloat = 0.28
 
     public var backgroundColor: UIColor = PopoverConfig.defaultBackgroundColor
     public var backgroundOverlayColor: UIColor = PopoverConfig.defaultBackgroundOverlayColor
