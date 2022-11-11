@@ -3,6 +3,8 @@ import UIKit
 public struct PopoverConfig {
     public static var defaultBackgroundColor: UIColor = .tertiarySystemBackground
     public static var defaultBackgroundOverlayColor: UIColor = .black.withAlphaComponent(0.15)
+    public static var defaultBorderColor: UIColor = .separator
+    public static var defaultBorderWidth: CGFloat = 0
     public static var defaultCornerRadius: CGFloat = 16.0
     public static var defaultShadowColor: UIColor = .black
     public static var defaultShadowOpacity: CGFloat = 0.3
@@ -41,6 +43,8 @@ public struct PopoverConfig {
     public var backgroundColor: UIColor = PopoverConfig.defaultBackgroundColor
     public var backgroundOverlayColor: UIColor = PopoverConfig.defaultBackgroundOverlayColor
     public var cornerRadius: CGFloat = PopoverConfig.defaultCornerRadius
+    public var borderColor: UIColor = PopoverConfig.defaultBorderColor
+    public var borderWidth: CGFloat = PopoverConfig.defaultBorderWidth
     public var shadowColor: UIColor = PopoverConfig.defaultShadowColor
     public var shadowOpacity: CGFloat = PopoverConfig.defaultShadowOpacity
     public var shadowRadius: CGFloat = PopoverConfig.defaultShadowRadius
