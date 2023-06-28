@@ -88,6 +88,7 @@ public class PopoverManager: NSObject {
 
     @objc func didTouch(gr: PopoverDismissGesture) {
         if let popoverData = popovers.last,
+           popoverData.gesture == gr,
            popoverData.view.hitTest(gr.location(in: popoverData.view), with: nil) == nil,
            popoverData.config.dismissByBackgroundTap,
            popoverData.config.onBackgroundTap?(gr) ?? true
@@ -134,7 +135,7 @@ public class PopoverManager: NSObject {
             }
         }
 
-        let gesture = PopoverDismissGesture(target: self, action: #selector(didTouch))
+        let gesture = PopoverDismissGesture(target: self, action: #selector(didTouch(gr:)))
         gesture.blockTap = config.shouldBlockBackgroundTapGesture
         if config.dismissByBackgroundTap {
             container.addGestureRecognizer(gesture)
