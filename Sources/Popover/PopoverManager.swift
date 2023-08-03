@@ -121,7 +121,7 @@ public class PopoverManager: NSObject {
         popoverWrapper.contentView = popover
         popoverWrapper.zPosition = 10
         popoverWrapper.contentWrapperView.backgroundColor = config.backgroundColor
-        popoverWrapper.triangle.fillColor = config.backgroundColor
+        popoverWrapper.triangle.fillColor = config.triangleColor ?? config.backgroundColor
         popoverWrapper.shadowRadius = config.shadowRadius
         popoverWrapper.shadowOpacity = config.shadowOpacity
         popoverWrapper.shadowColor = config.shadowColor
