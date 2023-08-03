@@ -49,6 +49,7 @@ public struct PopoverConfig {
     public var shadowOpacity: CGFloat = PopoverConfig.defaultShadowOpacity
     public var shadowRadius: CGFloat = PopoverConfig.defaultShadowRadius
     public var shadowOffset: CGSize = PopoverConfig.defaultShadowOffset
+    public var triangleColor: UIColor? = nil
 
     public var dismissPreviousPopover: Bool = true
     public var showBackgroundOverlay: Bool = true
