@@ -41,7 +41,7 @@ public class PopoverManager: NSObject {
         container: UIView? = nil
     ) {
         guard let container = container ?? at.window else { return }
-        let maxSize = UIScreen.main.bounds.size.inset(by: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
+        let maxSize = container.bounds.size.inset(by: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
         let size = popover.sizeThatFits(maxSize)
         let shouldShowOnTop = container.convert(.zero, from: at).y > container.safeAreaInsets.top + 5 + size.height + space
         let showOnTop = showOnTop ?? shouldShowOnTop
