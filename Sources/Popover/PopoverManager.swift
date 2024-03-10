@@ -252,10 +252,14 @@ public class PopoverManager: NSObject {
     }
 
     @objc public func dismiss() {
-        hide(completion: nil)
+        hide()
     }
 
-    public func hide(completion: (() -> Void)?) {
+    @objc public func dismissAll() {
+        hideAll()
+    }
+
+    public func hide(completion: (() -> Void)? = nil) {
         hideTimer?.invalidate()
         if let popoverData = popovers.popLast() {
             let entryTransform = self.layout(popover: popoverData.view, config: popoverData.config)
@@ -277,6 +281,12 @@ public class PopoverManager: NSObject {
             popoverData.config.onDismiss?()
         } else {
             completion?()
+        }
+    }
+
+    public func hideAll() {
+        while !popovers.isEmpty {
+            hide()
         }
     }
 }
