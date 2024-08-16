@@ -51,6 +51,7 @@ public struct PopoverConfig {
     public var shadowOffset: CGSize = PopoverConfig.defaultShadowOffset
     public var triangleColor: UIColor? = nil
 
+    public var clipsToBounds: Bool = true
     public var dismissPreviousPopover: Bool = true
     public var showBackgroundOverlay: Bool = true
     public var dismissByBackgroundTap: Bool = true
