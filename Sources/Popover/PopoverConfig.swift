@@ -91,3 +91,14 @@ public struct PopoverConfig {
         self.container = container
     }
 }
+
+extension PopoverConfig {
+    var isSourceRectValid: Bool {
+        switch anchor {
+        case .frame(let rect):
+            return true
+        case .view(let view):
+            return container.superview != nil && view.superview != nil
+        }
+    }
+}

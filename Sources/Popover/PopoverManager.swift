@@ -29,7 +29,6 @@ public class PopoverManager: NSObject {
     public var currentBackgroundOverlay: UIView? {
         popovers.last?.backgroundView
     }
-    var hideTimer: Timer?
 
     public func show(
         popover: UIView,
@@ -94,10 +93,8 @@ public class PopoverManager: NSObject {
            popoverData.config.onBackgroundTap?(gr) ?? true
         {
             let id = popoverData.view.identifier
-            delay(0.1) {
-                if PopoverManager.shared.currentPopover?.identifier == id {
-                    PopoverManager.shared.dismiss()
-                }
+            delay {
+                PopoverManager.shared.hide(id: id)
             }
         }
     }
@@ -114,8 +111,7 @@ public class PopoverManager: NSObject {
             dismiss()
         }
 
-        let popoverWrapper = PopoverView()
-        popoverWrapper.identifier = config.identifier ?? UUID().uuidString
+        let popoverWrapper = PopoverView(identifier: config.identifier ?? UUID().uuidString)
         popoverWrapper.contentWrapperView.cornerRadius = config.cornerRadius
         popoverWrapper.insets = config.insets
         popoverWrapper.contentView = popover
@@ -127,7 +123,8 @@ public class PopoverManager: NSObject {
         popoverWrapper.shadowOpacity = config.shadowOpacity
         popoverWrapper.shadowColor = config.shadowColor
         popoverWrapper.shadowOffset = config.shadowOffset
-        popoverWrapper.transform = self.layout(popover: popoverWrapper, config: config)
+        popoverWrapper.entryTransform = self.layout(popover: popoverWrapper, config: config)
+        popoverWrapper.transform = popoverWrapper.entryTransform
 
         var backgroundOverlay: UIView? = nil
         if config.showBackgroundOverlay {
@@ -166,10 +163,11 @@ public class PopoverManager: NSObject {
                 popoverWrapper.alpha = 1
             })
 
-        hideTimer?.invalidate()
         if config.duration != .infinity {
-            hideTimer = Timer.scheduledTimer(
-                timeInterval: config.duration, target: self, selector: #selector(dismiss), userInfo: nil, repeats: false)
+            let id = popoverWrapper.identifier
+            popoverWrapper.hideTimer = Timer.scheduledTimer(withTimeInterval: config.duration, repeats: false, block: { [weak self] _ in
+                self?.hide(id: id)
+            })
         }
     }
 
@@ -261,9 +259,14 @@ public class PopoverManager: NSObject {
     }
 
     public func hide(completion: (() -> Void)? = nil) {
-        hideTimer?.invalidate()
-        if let popoverData = popovers.popLast() {
-            let entryTransform = self.layout(popover: popoverData.view, config: popoverData.config)
+        guard let id = popovers.last?.view.identifier else { return }
+        hide(id: id, completion: completion)
+    }
+
+    public func hide(id: String, completion: (() -> Void)? = nil) {
+        if let popoverIndex = popovers.lastIndex(where: { $0.view.identifier == id }) {
+            let popoverData = popovers.remove(at: popoverIndex)
+            let entryTransform = popoverData.config.isSourceRectValid ? self.layout(popover: popoverData.view, config: popoverData.config) : popoverData.view.entryTransform
             if let gesture = popoverData.gesture {
                 gesture.view?.removeGestureRecognizer(gesture)
             }

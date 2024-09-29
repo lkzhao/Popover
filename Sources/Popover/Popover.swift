@@ -39,8 +39,10 @@ internal class ShapeView: UIView {
 }
 
 public class PopoverView: UIView {
-    public var identifier: String?
+    public var identifier: String
     public var insets = UIEdgeInsets.zero
+    var hideTimer: Timer?
+    var entryTransform: CGAffineTransform = .identity
 
     let triangle = ShapeView()
 
@@ -59,8 +61,9 @@ public class PopoverView: UIView {
         }
     }
 
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
+    public init(identifier: String) {
+        self.identifier = identifier
+        super.init(frame: .zero)
 
         contentWrapperView.cornerRadius = 12
         contentWrapperView.backgroundColor = .white
