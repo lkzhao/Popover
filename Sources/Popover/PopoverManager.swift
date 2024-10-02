@@ -86,21 +86,27 @@ public class PopoverManager: NSObject {
     }
 
     @objc func didTouch(gr: PopoverDismissGesture) {
-        if let popoverData = popovers.last,
-           popoverData.gesture == gr,
-           popoverData.view.hitTest(gr.location(in: popoverData.view), with: nil) == nil,
-           popoverData.config.dismissByBackgroundTap,
-           popoverData.config.onBackgroundTap?(gr) ?? true
-        {
-            let id = popoverData.view.identifier
-            delay {
-                PopoverManager.shared.hide(id: id)
+        if let lastPopover = popovers.last, lastPopover.gesture == gr {
+            for popoverData in popovers.reversed() {
+                if popoverData.view.point(inside: gr.location(in: popoverData.view), with: nil) {
+                    break
+                }
+                if !popoverData.config.dismissByBackgroundTap || !(popoverData.config.onBackgroundTap?(gr) ?? true) {
+                    break
+                }
+                let id = popoverData.view.identifier
+                delay {
+                    PopoverManager.shared.hide(id: id)
+                }
+                if popoverData.config.shouldBlockBackgroundTapGesture {
+                    break
+                }
             }
         }
     }
 
     public func show(popover: UIView, config: PopoverConfig) {
-        if let oldIdentifier = currentPopover?.identifier, oldIdentifier == config.identifier {
+        if popovers.contains(where: { $0.view.identifier == config.identifier }) {
             // skip if identifier matches
             return
         }
@@ -108,7 +114,7 @@ public class PopoverManager: NSObject {
         let container = config.container
 
         if config.dismissPreviousPopover {
-            dismiss()
+            dismissAll()
         }
 
         let popoverWrapper = PopoverView(identifier: config.identifier ?? UUID().uuidString)
