@@ -30,6 +30,11 @@ public class PopoverManager: NSObject {
         popovers.last?.backgroundView
     }
 
+    override init() {
+        super.init()
+        KeyboardManager.shared.addHeightObserver(self)
+    }
+
     public func show(
         popover: UIView,
         at: UIView,
@@ -298,5 +303,11 @@ public class PopoverManager: NSObject {
         while !popovers.isEmpty {
             hide()
         }
+    }
+}
+
+extension PopoverManager: KeyboardHeightObserver {
+    public func keyboardHeightUpdated(_ keyboardHeight: CGFloat) {
+        relayout()
     }
 }
