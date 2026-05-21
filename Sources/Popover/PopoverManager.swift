@@ -220,10 +220,12 @@ public class PopoverManager: NSObject {
     func layout(popover: PopoverView, config: PopoverConfig) -> CGAffineTransform {
         let container = config.container
         let sourceRect = config.sourceRect
+        let safeAreaInsets = config.ignoreSafeAreaInsets ? .zero : container.safeAreaInsets
+        let keyboardHeight: CGFloat = config.ignoreKeyboard ? 0 : KeyboardManager.shared.keyboardHeight
         let containerRect = container.bounds.inset(by: config.containerInsets).inset(
             by: UIEdgeInsets(
-                top: container.safeAreaInsets.top, left: container.safeAreaInsets.left,
-                bottom: max(container.safeAreaInsets.bottom, KeyboardManager.shared.keyboardHeight), right: container.safeAreaInsets.right))
+                top: safeAreaInsets.top, left: safeAreaInsets.left,
+                bottom: max(safeAreaInsets.bottom, keyboardHeight), right: safeAreaInsets.right))
         var size = popover.sizeThatFits(containerRect.size.inset(by: config.insets)).inset(by: -config.insets)
         size.height = min(containerRect.height, size.height)
         size.width = min(containerRect.width, size.width)

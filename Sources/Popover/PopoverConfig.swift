@@ -58,6 +58,8 @@ public struct PopoverConfig {
     public var shouldBlockBackgroundTapGesture: Bool = true
     public var showTriangle: Bool = true
     public var ignoreAnchorViewTransform: Bool = false
+    public var ignoreSafeAreaInsets: Bool = false
+    public var ignoreKeyboard: Bool = false
 
     public var anchor: PopoverAnchor = .frame(rect: CGRect(center: PopoverConfig.defaultContainer?.bounds.center ?? .zero, size: .zero))
     
